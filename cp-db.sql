@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 25, 2017 at 10:47 AM
+-- Generation Time: Oct 25, 2017 at 10:49 AM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 7.1.1
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `cwie_dbvg`
+-- Database: `cwie_db`
 --
 
 -- --------------------------------------------------------
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `application` (
   `application_id` int(11) NOT NULL,
   `s_id` int(11) DEFAULT NULL,
+  `app_pic` varchar(50) DEFAULT NULL,
   `application_dateS` date DEFAULT NULL,
   `application_dateE` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -49,7 +50,7 @@ CREATE TABLE `bank` (
 --
 
 INSERT INTO `bank` (`bnk_id`, `bnk_name`) VALUES
-(2, 'KTC'),
+(2, ''),
 (1, 'SCB');
 
 -- --------------------------------------------------------
@@ -114,7 +115,8 @@ INSERT INTO `building_info` (`bldg_id`, `bldg_name`, `plant_id`) VALUES
 (5, 'B5', NULL),
 (6, 'B6', NULL),
 (7, 'B7', NULL),
-(8, 'B8', NULL);
+(8, 'B8', NULL),
+(9, '', NULL);
 
 -- --------------------------------------------------------
 
@@ -136,7 +138,8 @@ INSERT INTO `category` (`cate_id`, `cate_name`) VALUES
 (2, 'DUO'),
 (3, 'Thai-Malaysia'),
 (4, 'WIL'),
-(5, 'Handicap');
+(5, 'Handicap'),
+(6, 'Internship');
 
 -- --------------------------------------------------------
 
@@ -417,16 +420,12 @@ CREATE TABLE `degree_info` (
 --
 
 INSERT INTO `degree_info` (`degree_id`, `degree_name`) VALUES
-(1, 'Doctor Degree'),
+(1, 'Doctor Degree (Inter)'),
 (2, 'Master Degree'),
 (3, 'Bachelor Degree'),
 (4, 'High Vocational Certificate'),
 (5, 'Vocational Certificate'),
-(6, 'Senior High School'),
-(7, 'Diploma'),
-(8, 'Bachelor Degree inter'),
-(9, 'Master Degree inter'),
-(10, 'Doctor Degree inter');
+(6, 'Senior High School');
 
 -- --------------------------------------------------------
 
@@ -437,6 +436,7 @@ INSERT INTO `degree_info` (`degree_id`, `degree_name`) VALUES
 CREATE TABLE `department_info` (
   `dep_id` int(11) NOT NULL,
   `dep_name` varchar(100) NOT NULL,
+  `cost_centre` varchar(10) NOT NULL,
   `dep_ext` int(11) DEFAULT NULL,
   `bldg_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -466,7 +466,8 @@ CREATE TABLE `education_blackgrounf` (
 
 CREATE TABLE `education_info` (
   `education_id` int(11) NOT NULL,
-  `ins_id` int(11) DEFAULT NULL,
+  `edu_institute` int(11) DEFAULT NULL,
+  `intitute_id` int(11) DEFAULT NULL,
   `major_id` int(11) DEFAULT NULL,
   `degree_id` int(11) DEFAULT NULL,
   `s_id` int(11) DEFAULT NULL
@@ -581,8 +582,8 @@ CREATE TABLE `immigration_office` (
 CREATE TABLE `institute` (
   `ins_id` int(3) NOT NULL,
   `ins_name` varchar(100) NOT NULL,
-  `itp_id` int(2) DEFAULT NULL,
-  `country_id` int(11) DEFAULT NULL
+  `ins_type` int(11) DEFAULT NULL,
+  `ins_country` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -672,14 +673,6 @@ CREATE TABLE `language_info` (
   `s_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `language_info`
---
-
-INSERT INTO `language_info` (`lg_info_id`, `lg_id`, `lv_id`, `s_id`) VALUES
-(18, 1, 2, 1229),
-(20, NULL, NULL, 1230);
-
 -- --------------------------------------------------------
 
 --
@@ -718,7 +711,7 @@ CREATE TABLE `location` (
 --
 
 INSERT INTO `location` (`location_id`, `location_name`) VALUES
-(1, 'THO'),
+(1, ''),
 (2, 'HDD'),
 (3, 'MHO'),
 (4, 'HSA');
@@ -742,7 +735,6 @@ CREATE TABLE `login_info` (
 --
 
 INSERT INTO `login_info` (`login_id`, `full_name`, `email`, `password`, `created_details`) VALUES
-(1, 'Daniyal Qureshi', 'dani.thailand@yahoo.com', 'a79938ab5392c8024dff98a44cf776f4cbbb47be9ff78e4997a4920ec262b320', '2017-03-01 09:21:25'),
 (4, 'Admin', 'admin@wdc.co.th', '3b612c75a7b5048a435fb6ec81e52ff92d6d795a8b5a9c17070f6a63c97a53b2', '2017-04-03 03:23:03');
 
 -- --------------------------------------------------------
@@ -798,27 +790,10 @@ CREATE TABLE `plant_info` (
 --
 
 INSERT INTO `plant_info` (`plant_id`, `plant_name`, `country_id`) VALUES
-(1, 'BPI', 1),
-(2, 'NAV', 1),
-(3, 'PRB', 1),
+(1, 'Phra Nakhon Si Ayutthaya', 1),
+(2, 'Pathum Thani', 1),
+(3, 'Prachin Buri', 1),
 (4, 'Pulau Pinang', 2);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `projectoverview`
--- (See below for the actual view)
---
-CREATE TABLE `projectoverview` (
-`s_id` int(11)
-,`s_fname` varchar(20)
-,`s_lname` varchar(20)
-,`project_id` int(11)
-,`project_name` varchar(100)
-,`project_detail` text
-,`year` int(4)
-,`num` bigint(21)
-);
 
 -- --------------------------------------------------------
 
@@ -1090,7 +1065,8 @@ CREATE TABLE `student_info` (
   `s_lname` varchar(20) NOT NULL,
   `thai_fname` varchar(20) DEFAULT NULL,
   `thai_lname` varchar(20) DEFAULT NULL,
-  `years` int(11) DEFAULT NULL,
+  `s_nickname` varchar(15) DEFAULT NULL,
+  `s_dob` int(11) DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
   `citizen_id` varchar(13) DEFAULT NULL,
   `remark` text,
@@ -1100,7 +1076,7 @@ CREATE TABLE `student_info` (
   `national_id` int(11) DEFAULT NULL,
   `title_title_id` int(11) DEFAULT NULL,
   `status_id` int(11) DEFAULT NULL,
-  `cate_id` int(3) DEFAULT NULL
+  `stu_timestamp` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1182,8 +1158,9 @@ CREATE TABLE `student_status` (
 INSERT INTO `student_status` (`status_id`, `status_desc`) VALUES
 (1, 'On Process'),
 (2, 'Waiting on Board'),
-(3, 'Trainee'),
-(4, 'End Trainee');
+(3, 'Reject'),
+(4, 'Trainee'),
+(5, 'End Trainee');
 
 -- --------------------------------------------------------
 
@@ -1221,14 +1198,6 @@ CREATE TABLE `supervisor_info` (
   `spv_dept` int(2) DEFAULT NULL,
   `spv_bdg` int(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `supervisor_info`
---
-
-INSERT INTO `supervisor_info` (`spv_id`, `spv_fname`, `spv_lname`, `spv_job`, `spv_ext`, `spv_email`, `spv_mobile`, `spv_dept`, `spv_bdg`) VALUES
-(1, 'Theerasak', 'S.', 'Manager', 77602, 'theerasak.Sa-nguanmanasak@wdc.com', 888888888, 3, 3),
-(2, 'Sutthida', 'C.', 'Asst. Manager', 77603, 'sutthida.chan-okul@wdc.com', 999999999, 3, 3);
 
 -- --------------------------------------------------------
 
@@ -1307,18 +1276,6 @@ INSERT INTO `trainee_activity` (`activity_id`, `activity_name`, `activity_detail
 -- --------------------------------------------------------
 
 --
--- Table structure for table `trainee_category`
---
-
-CREATE TABLE `trainee_category` (
-  `tc_id` int(11) NOT NULL,
-  `trainee_id` int(11) NOT NULL,
-  `cate_id` int(3) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `trainee_duration`
 --
 
@@ -1344,8 +1301,8 @@ INSERT INTO `trainee_duration` (`trainee_duration_id`, `trainee_id`, `start_date
 --
 
 CREATE TABLE `trainee_has_project` (
-  `tp_id` int(5) NOT NULL,
-  `project_id` int(11) NOT NULL,
+  `tp_id` int(11) NOT NULL,
+  `project_id` int(11) DEFAULT NULL,
   `trainee_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1365,7 +1322,8 @@ CREATE TABLE `trainee_info` (
   `tni_bdg` int(2) DEFAULT NULL,
   `plant_id` int(11) DEFAULT NULL,
   `location_id` int(11) DEFAULT NULL,
-  `tac_acc_id` int(11) DEFAULT NULL
+  `tac_acc_id` int(11) DEFAULT NULL,
+  `cate_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1425,186 +1383,6 @@ CREATE TABLE `trainee_info_has_training_course` (
   `training_course_course_id` int(11) NOT NULL,
   `training_course_trainee_id` int(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `trainee_info_has_training_course`
---
-
-INSERT INTO `trainee_info_has_training_course` (`training_course_course_id`, `training_course_trainee_id`) VALUES
-(1, 369),
-(2, 369),
-(6, 369),
-(1, 398),
-(1, 399),
-(1, 400),
-(1, 401),
-(1, 402),
-(1, 403),
-(1, 404),
-(1, 405),
-(1, 406),
-(1, 407),
-(7, 407),
-(7, 407),
-(1, 408),
-(7, 408),
-(7, 408),
-(1, 409),
-(7, 409),
-(7, 409),
-(1, 410),
-(7, 410),
-(7, 410),
-(1, 411),
-(7, 411),
-(7, 411),
-(1, 412),
-(7, 412),
-(7, 412),
-(1, 413),
-(7, 413),
-(7, 413),
-(1, 414),
-(7, 414),
-(7, 414),
-(1, 415),
-(7, 415),
-(7, 415),
-(1, 416),
-(2, 416),
-(6, 416),
-(1, 417),
-(2, 417),
-(6, 417),
-(1, 418),
-(2, 418),
-(6, 418),
-(1, 419),
-(2, 419),
-(6, 419),
-(1, 420),
-(2, 420),
-(6, 420),
-(1, 421),
-(2, 421),
-(6, 421),
-(1, 422),
-(2, 422),
-(6, 422),
-(1, 423),
-(2, 423),
-(6, 423),
-(1, 426),
-(2, 426),
-(6, 426),
-(1, 427),
-(2, 427),
-(6, 427),
-(1, 428),
-(2, 428),
-(6, 428),
-(1, 429),
-(2, 429),
-(6, 429),
-(1, 430),
-(2, 430),
-(6, 430),
-(1, 431),
-(2, 431),
-(6, 431),
-(1, 432),
-(2, 432),
-(6, 432),
-(1, 433),
-(2, 433),
-(6, 433),
-(1, 434),
-(2, 434),
-(6, 434),
-(1, 435),
-(2, 435),
-(6, 435),
-(1, 436),
-(2, 436),
-(6, 436),
-(1, 437),
-(2, 437),
-(6, 437),
-(1, 438),
-(2, 438),
-(6, 438),
-(1, 439),
-(2, 439),
-(6, 439),
-(1, 440),
-(2, 440),
-(6, 440),
-(1, 441),
-(2, 441),
-(6, 441),
-(1, 442),
-(2, 442),
-(6, 442),
-(1, 443),
-(2, 443),
-(6, 443),
-(1, 444),
-(2, 444),
-(6, 444),
-(1, 445),
-(2, 445),
-(6, 445),
-(1, 446),
-(2, 446),
-(6, 446),
-(1, 447),
-(2, 447),
-(6, 447),
-(1, 448),
-(2, 448),
-(6, 448),
-(1, 449),
-(2, 449),
-(6, 449),
-(1, 450),
-(2, 450),
-(6, 450),
-(1, 451),
-(2, 451),
-(6, 451),
-(1, 452),
-(2, 452),
-(6, 452),
-(1, 453),
-(2, 453),
-(6, 453),
-(1, 454),
-(2, 454),
-(6, 454),
-(1, 455),
-(2, 455),
-(6, 455),
-(1, 456),
-(2, 456),
-(6, 456),
-(1, 457),
-(2, 457),
-(6, 457),
-(1, 458),
-(2, 458),
-(6, 458),
-(1, 459),
-(2, 459),
-(6, 459),
-(1, 460),
-(2, 460),
-(6, 460),
-(1, 461),
-(2, 461),
-(6, 461),
-(1, 462),
-(2, 462),
-(6, 462);
 
 -- --------------------------------------------------------
 
@@ -1668,7 +1446,7 @@ CREATE TABLE `trainee_transportation` (
   `driver_lname` varchar(20) DEFAULT NULL,
   `vehicle_no` varchar(5) DEFAULT NULL,
   `driver_mobile` varchar(12) DEFAULT NULL,
-  `destination_name` varchar(50) DEFAULT NULL,
+  `transportation_line` varchar(50) DEFAULT NULL,
   `transportation_point` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1718,21 +1496,6 @@ CREATE TABLE `transcript` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `universityoverview`
--- (See below for the actual view)
---
-CREATE TABLE `universityoverview` (
-`s_id` int(11)
-,`s_fname` varchar(20)
-,`s_lname` varchar(20)
-,`ins_name` varchar(100)
-,`year` int(4)
-,`num` bigint(21)
-);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `video`
 --
 
@@ -1777,24 +1540,6 @@ CREATE TABLE `work_experience` (
 DROP TABLE IF EXISTS `intercoop`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `intercoop`  AS  (select `student_info`.`s_fname` AS `s_fname`,`student_info`.`s_lname` AS `s_lname`,`country_list`.`country_name` AS `country_name`,`student_status`.`status_desc` AS `status_desc`,count(0) AS `status_num` from (((`student_info` join `student_address` on((`student_address`.`s_id` = `student_info`.`s_id`))) join `country_list` on((`country_list`.`country_id` = `student_address`.`country_id`))) join `student_status` on((`student_status`.`status_id` = `student_info`.`status_id`))) where (`country_list`.`country_name` <> 'Thailand') group by `country_list`.`country_name`,`student_status`.`status_desc`) ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `projectoverview`
---
-DROP TABLE IF EXISTS `projectoverview`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `projectoverview`  AS  (select `student_info`.`s_id` AS `s_id`,`student_info`.`s_fname` AS `s_fname`,`student_info`.`s_lname` AS `s_lname`,`trainee_project`.`project_id` AS `project_id`,`trainee_project`.`project_name` AS `project_name`,`trainee_project`.`project_detail` AS `project_detail`,extract(year from `application`.`application_dateS`) AS `year`,count(0) AS `num` from ((((`trainee_info` join `student_info` on((`student_info`.`s_id` = `trainee_info`.`s_id`))) join `application` on((`application`.`s_id` = `student_info`.`s_id`))) join `trainee_has_project` on((`trainee_has_project`.`trainee_id` = `trainee_info`.`trainee_id`))) join `trainee_project` on((`trainee_project`.`project_id` = `trainee_has_project`.`project_id`))) group by `trainee_project`.`project_name`,extract(year from `application`.`application_dateS`)) ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `universityoverview`
---
-DROP TABLE IF EXISTS `universityoverview`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `universityoverview`  AS  (select `student_info`.`s_id` AS `s_id`,`student_info`.`s_fname` AS `s_fname`,`student_info`.`s_lname` AS `s_lname`,`institute`.`ins_name` AS `ins_name`,extract(year from `application`.`application_dateS`) AS `year`,count(0) AS `num` from (((`student_info` join `application` on((`application`.`s_id` = `student_info`.`s_id`))) join `education_info` on((`education_info`.`s_id` = `student_info`.`s_id`))) join `institute` on((`institute`.`ins_id` = `education_info`.`ins_id`))) group by `institute`.`ins_name`,extract(year from `application`.`application_dateS`)) ;
 
 --
 -- Indexes for dumped tables
@@ -1899,7 +1644,7 @@ ALTER TABLE `education_info`
   ADD KEY `fk_education_info_major_info1_idx` (`major_id`),
   ADD KEY `fk_education_info_degree_info1_idx` (`degree_id`),
   ADD KEY `fk_education_info_student_info1_idx` (`s_id`),
-  ADD KEY `fkegu_inst` (`ins_id`);
+  ADD KEY `fkegu_inst` (`edu_institute`);
 
 --
 -- Indexes for table `email_info`
@@ -1947,8 +1692,8 @@ ALTER TABLE `immigration_office`
 --
 ALTER TABLE `institute`
   ADD PRIMARY KEY (`ins_id`),
-  ADD KEY `fkins_type` (`itp_id`),
-  ADD KEY `fkins_country` (`country_id`);
+  ADD KEY `fkins_type` (`ins_type`),
+  ADD KEY `fkins_country` (`ins_country`);
 
 --
 -- Indexes for table `institute_type`
@@ -2025,7 +1770,7 @@ ALTER TABLE `other_doc`
 --
 ALTER TABLE `plant_info`
   ADD PRIMARY KEY (`plant_id`),
-  ADD KEY `country_id_idx` (`country_id`);
+  ADD KEY `fkpnt_country` (`country_id`);
 
 --
 -- Indexes for table `province`
@@ -2086,7 +1831,7 @@ ALTER TABLE `sent_email`
 ALTER TABLE `student_address`
   ADD PRIMARY KEY (`address_Id`),
   ADD KEY `s_id_idx` (`s_id`),
-  ADD KEY `country_id_idx` (`country_id`);
+  ADD KEY `fksad_country` (`country_id`);
 
 --
 -- Indexes for table `student_contact_details`
@@ -2112,8 +1857,7 @@ ALTER TABLE `student_info`
   ADD KEY `s_ref_id_idx` (`ref_id`),
   ADD KEY `fk_student_info_student_national_id1_idx` (`national_id`),
   ADD KEY `fk_student_info_title1_idx` (`title_title_id`),
-  ADD KEY `s_status_id_idx` (`status_id`),
-  ADD KEY `s_cate_id_idx` (`cate_id`);
+  ADD KEY `s_status_id_idx` (`status_id`);
 
 --
 -- Indexes for table `student_national_info`
@@ -2188,14 +1932,6 @@ ALTER TABLE `trainee_activity`
   ADD KEY `bldg_id_idx` (`bldg_id`);
 
 --
--- Indexes for table `trainee_category`
---
-ALTER TABLE `trainee_category`
-  ADD PRIMARY KEY (`tc_id`),
-  ADD KEY `fktrainee_id` (`trainee_id`),
-  ADD KEY `fkcate_id` (`cate_id`);
-
---
 -- Indexes for table `trainee_duration`
 --
 ALTER TABLE `trainee_duration`
@@ -2207,8 +1943,8 @@ ALTER TABLE `trainee_duration`
 --
 ALTER TABLE `trainee_has_project`
   ADD PRIMARY KEY (`tp_id`),
-  ADD KEY `fkthp_tnc` (`trainee_id`),
-  ADD KEY `fkthp_pjc` (`project_id`);
+  ADD KEY `fkthp_pjc` (`project_id`),
+  ADD KEY `trainee_id` (`trainee_id`) USING BTREE;
 
 --
 -- Indexes for table `trainee_info`
@@ -2222,7 +1958,8 @@ ALTER TABLE `trainee_info`
   ADD KEY `plant_id_idx` (`plant_id`),
   ADD KEY `location_id_idx` (`location_id`),
   ADD KEY `fktrn_trainee_acc_id` (`tac_acc_id`),
-  ADD KEY `fktni_bdg` (`tni_bdg`);
+  ADD KEY `fktni_bdg` (`tni_bdg`),
+  ADD KEY `fk` (`cate_id`);
 
 --
 -- Indexes for table `trainee_info_has_trainee_activity`
@@ -2325,7 +2062,7 @@ ALTER TABLE `work_experience`
 -- AUTO_INCREMENT for table `application`
 --
 ALTER TABLE `application`
-  MODIFY `application_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=507;
+  MODIFY `application_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `bank`
 --
@@ -2335,27 +2072,27 @@ ALTER TABLE `bank`
 -- AUTO_INCREMENT for table `bank_acc_info`
 --
 ALTER TABLE `bank_acc_info`
-  MODIFY `bac_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `bac_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `bank_has_banch`
 --
 ALTER TABLE `bank_has_banch`
-  MODIFY `bnk_has_bch_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=336;
+  MODIFY `bnk_has_bch_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `bnk_banch`
 --
 ALTER TABLE `bnk_banch`
-  MODIFY `bch_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `bch_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `building_info`
 --
 ALTER TABLE `building_info`
-  MODIFY `bldg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `bldg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `cate_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `cate_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `chanel`
 --
@@ -2375,22 +2112,22 @@ ALTER TABLE `country_list`
 -- AUTO_INCREMENT for table `degree_info`
 --
 ALTER TABLE `degree_info`
-  MODIFY `degree_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `degree_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `department_info`
 --
 ALTER TABLE `department_info`
-  MODIFY `dep_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `dep_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `education_blackgrounf`
 --
 ALTER TABLE `education_blackgrounf`
-  MODIFY `bg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `bg_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `education_info`
 --
 ALTER TABLE `education_info`
-  MODIFY `education_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1000;
+  MODIFY `education_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `email_info`
 --
@@ -2400,17 +2137,17 @@ ALTER TABLE `email_info`
 -- AUTO_INCREMENT for table `evaluation`
 --
 ALTER TABLE `evaluation`
-  MODIFY `eva_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `eva_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `extracurricular_act`
 --
 ALTER TABLE `extracurricular_act`
-  MODIFY `exact_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `exact_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `hobby_info`
 --
 ALTER TABLE `hobby_info`
-  MODIFY `hobby_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `hobby_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `immigration_office`
 --
@@ -2420,7 +2157,7 @@ ALTER TABLE `immigration_office`
 -- AUTO_INCREMENT for table `institute`
 --
 ALTER TABLE `institute`
-  MODIFY `ins_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `ins_id` int(3) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `institute_type`
 --
@@ -2435,7 +2172,7 @@ ALTER TABLE `language`
 -- AUTO_INCREMENT for table `language_info`
 --
 ALTER TABLE `language_info`
-  MODIFY `lg_info_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `lg_info_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `language_lv`
 --
@@ -2450,17 +2187,17 @@ ALTER TABLE `login_info`
 -- AUTO_INCREMENT for table `major_info`
 --
 ALTER TABLE `major_info`
-  MODIFY `major_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+  MODIFY `major_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `non_thai`
 --
 ALTER TABLE `non_thai`
-  MODIFY `nthai_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=175;
+  MODIFY `nthai_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `other_doc`
 --
 ALTER TABLE `other_doc`
-  MODIFY `idother_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=597;
+  MODIFY `idother_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `plant_info`
 --
@@ -2475,12 +2212,12 @@ ALTER TABLE `province`
 -- AUTO_INCREMENT for table `resume`
 --
 ALTER TABLE `resume`
-  MODIFY `resume_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=597;
+  MODIFY `resume_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `roi_project`
 --
 ALTER TABLE `roi_project`
-  MODIFY `rid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=501;
+  MODIFY `rid` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `room`
 --
@@ -2505,22 +2242,22 @@ ALTER TABLE `sent_email`
 -- AUTO_INCREMENT for table `student_address`
 --
 ALTER TABLE `student_address`
-  MODIFY `address_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=502;
+  MODIFY `address_Id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `student_contact_details`
 --
 ALTER TABLE `student_contact_details`
-  MODIFY `contact_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `contact_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `student_emergency_contact`
 --
 ALTER TABLE `student_emergency_contact`
-  MODIFY `emc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=173;
+  MODIFY `emc_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `student_info`
 --
 ALTER TABLE `student_info`
-  MODIFY `s_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1729;
+  MODIFY `s_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `student_origin`
 --
@@ -2535,12 +2272,12 @@ ALTER TABLE `student_reference_info`
 -- AUTO_INCREMENT for table `student_relationship`
 --
 ALTER TABLE `student_relationship`
-  MODIFY `relation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `relation_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `student_status`
 --
 ALTER TABLE `student_status`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `student_type`
 --
@@ -2550,7 +2287,7 @@ ALTER TABLE `student_type`
 -- AUTO_INCREMENT for table `supervisor_info`
 --
 ALTER TABLE `supervisor_info`
-  MODIFY `spv_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `spv_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `title`
 --
@@ -2560,17 +2297,12 @@ ALTER TABLE `title`
 -- AUTO_INCREMENT for table `trainee_account`
 --
 ALTER TABLE `trainee_account`
-  MODIFY `trainee_acc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `trainee_acc_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trainee_activity`
 --
 ALTER TABLE `trainee_activity`
   MODIFY `activity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT for table `trainee_category`
---
-ALTER TABLE `trainee_category`
-  MODIFY `tc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `trainee_duration`
 --
@@ -2580,12 +2312,12 @@ ALTER TABLE `trainee_duration`
 -- AUTO_INCREMENT for table `trainee_has_project`
 --
 ALTER TABLE `trainee_has_project`
-  MODIFY `tp_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=501;
+  MODIFY `tp_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trainee_info`
 --
 ALTER TABLE `trainee_info`
-  MODIFY `trainee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=760;
+  MODIFY `trainee_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trainee_info_has_trainee_activity`
 --
@@ -2610,12 +2342,12 @@ ALTER TABLE `trainee_presentation`
 -- AUTO_INCREMENT for table `trainee_project`
 --
 ALTER TABLE `trainee_project`
-  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=241;
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trainee_transportation`
 --
 ALTER TABLE `trainee_transportation`
-  MODIFY `transportation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `transportation_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trainee_visa`
 --
@@ -2625,27 +2357,27 @@ ALTER TABLE `trainee_visa`
 -- AUTO_INCREMENT for table `training_course`
 --
 ALTER TABLE `training_course`
-  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `transcript`
 --
 ALTER TABLE `transcript`
-  MODIFY `transcript_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=597;
+  MODIFY `transcript_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `video`
 --
 ALTER TABLE `video`
-  MODIFY `video_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=597;
+  MODIFY `video_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `visa`
 --
 ALTER TABLE `visa`
-  MODIFY `visa_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=597;
+  MODIFY `visa_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `work_experience`
 --
 ALTER TABLE `work_experience`
-  MODIFY `wex_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `wex_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
@@ -2660,8 +2392,8 @@ ALTER TABLE `application`
 -- Constraints for table `bank_acc_info`
 --
 ALTER TABLE `bank_acc_info`
-  ADD CONSTRAINT `fk_bnk_has_id` FOREIGN KEY (`bnk_has_id`) REFERENCES `bank_has_banch` (`bnk_has_bch_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fkbac_trainee_id` FOREIGN KEY (`trainee_id`) REFERENCES `trainee_info` (`trainee_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fkbac_trainee_id` FOREIGN KEY (`trainee_id`) REFERENCES `trainee_info` (`trainee_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fkbhb` FOREIGN KEY (`bnk_has_id`) REFERENCES `bank_has_banch` (`bnk_has_bch_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `bank_has_banch`
@@ -2699,10 +2431,10 @@ ALTER TABLE `education_blackgrounf`
 -- Constraints for table `education_info`
 --
 ALTER TABLE `education_info`
-  ADD CONSTRAINT `fk_education_info_degree_info1_idx` FOREIGN KEY (`degree_id`) REFERENCES `degree_info` (`degree_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_education_info_major_info1_idx` FOREIGN KEY (`major_id`) REFERENCES `major_info` (`major_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_education_info_student_info1_idx` FOREIGN KEY (`s_id`) REFERENCES `student_info` (`s_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fkegu_inst` FOREIGN KEY (`ins_id`) REFERENCES `institute` (`ins_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_education_info_degree_info1` FOREIGN KEY (`degree_id`) REFERENCES `degree_info` (`degree_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_education_info_major_info1` FOREIGN KEY (`major_id`) REFERENCES `major_info` (`major_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_student_info1` FOREIGN KEY (`s_id`) REFERENCES `student_info` (`s_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fkegu_inst` FOREIGN KEY (`edu_institute`) REFERENCES `institute` (`ins_id`);
 
 --
 -- Constraints for table `evaluation`
@@ -2712,11 +2444,37 @@ ALTER TABLE `evaluation`
   ADD CONSTRAINT `fkeva_stu_id` FOREIGN KEY (`stu_id`) REFERENCES `student_info` (`s_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `extracurricular_act`
+--
+ALTER TABLE `extracurricular_act`
+  ADD CONSTRAINT `fk_extracurricular_act_student_info1` FOREIGN KEY (`student_info_s_id`) REFERENCES `student_info` (`s_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `hobby_info`
+--
+ALTER TABLE `hobby_info`
+  ADD CONSTRAINT `fkhob_s_id` FOREIGN KEY (`s_id`) REFERENCES `student_info` (`s_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `institute`
 --
 ALTER TABLE `institute`
-  ADD CONSTRAINT `fkins_country` FOREIGN KEY (`country_id`) REFERENCES `country_list` (`country_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fkins_type` FOREIGN KEY (`itp_id`) REFERENCES `institute_type` (`itp_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fkins_country` FOREIGN KEY (`ins_country`) REFERENCES `country_list` (`country_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fkins_type` FOREIGN KEY (`ins_type`) REFERENCES `institute_type` (`itp_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `interview_info`
+--
+ALTER TABLE `interview_info`
+  ADD CONSTRAINT `fkinv_application_id` FOREIGN KEY (`applicantion_id`) REFERENCES `application` (`application_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `language_info`
+--
+ALTER TABLE `language_info`
+  ADD CONSTRAINT `fklg_info_s_id` FOREIGN KEY (`s_id`) REFERENCES `student_info` (`s_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fklg_lg` FOREIGN KEY (`lg_id`) REFERENCES `language` (`lg_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fklg_lv` FOREIGN KEY (`lv_id`) REFERENCES `language_lv` (`lv_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `non_thai`
@@ -2727,36 +2485,184 @@ ALTER TABLE `non_thai`
   ADD CONSTRAINT `s_idx` FOREIGN KEY (`s_id`) REFERENCES `student_info` (`s_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `other_doc`
+--
+ALTER TABLE `other_doc`
+  ADD CONSTRAINT `fk_other_doc_application1` FOREIGN KEY (`application_application_id`) REFERENCES `application` (`application_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `plant_info`
+--
+ALTER TABLE `plant_info`
+  ADD CONSTRAINT `fkpnt_country` FOREIGN KEY (`country_id`) REFERENCES `country_list` (`country_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `resume`
+--
+ALTER TABLE `resume`
+  ADD CONSTRAINT `fkres_appilication_id` FOREIGN KEY (`application_id`) REFERENCES `application` (`application_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `roi_project`
 --
 ALTER TABLE `roi_project`
   ADD CONSTRAINT `fk_rid_tp_id` FOREIGN KEY (`tp_id`) REFERENCES `trainee_has_project` (`tp_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `room`
+--
+ALTER TABLE `room`
+  ADD CONSTRAINT `fkrm_room_id` FOREIGN KEY (`bldg_id`) REFERENCES `building_info` (`bldg_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `schedule_email_act`
+--
+ALTER TABLE `schedule_email_act`
+  ADD CONSTRAINT `fk_s_sts_id_sch_email` FOREIGN KEY (`status_id`) REFERENCES `student_status` (`status_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tr_ac_id_sch_email` FOREIGN KEY (`activity_id`) REFERENCES `trainee_activity` (`activity_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tr_email_id_email` FOREIGN KEY (`email_id`) REFERENCES `email_info` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `schedule_email_pre`
+--
+ALTER TABLE `schedule_email_pre`
+  ADD CONSTRAINT `tr_pre_sch_fk_m1` FOREIGN KEY (`present_id`) REFERENCES `trainee_presentation` (`presentation_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tr_pre_sch_fk_m3` FOREIGN KEY (`pre_email_id`) REFERENCES `email_info` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `sent_email`
+--
+ALTER TABLE `sent_email`
+  ADD CONSTRAINT `fksem_email_id` FOREIGN KEY (`email_id`) REFERENCES `email_info` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fksem_s_id` FOREIGN KEY (`s_id`) REFERENCES `student_info` (`s_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `student_address`
+--
+ALTER TABLE `student_address`
+  ADD CONSTRAINT `fksad_country` FOREIGN KEY (`country_id`) REFERENCES `country_list` (`country_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fksad_s_id` FOREIGN KEY (`s_id`) REFERENCES `student_info` (`s_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `student_contact_details`
+--
+ALTER TABLE `student_contact_details`
+  ADD CONSTRAINT `fksco_s_id` FOREIGN KEY (`scd_s_id`) REFERENCES `student_info` (`s_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `student_emergency_contact`
+--
+ALTER TABLE `student_emergency_contact`
+  ADD CONSTRAINT `fk_student_emergency_contact_student_contact_details1` FOREIGN KEY (`contact_id`) REFERENCES `student_contact_details` (`contact_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `student_info`
 --
 ALTER TABLE `student_info`
-  ADD CONSTRAINT `fk_student_info_student_national_id1_idx` FOREIGN KEY (`national_id`) REFERENCES `student_national_info` (`national_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_student_info_title1_idx` FOREIGN KEY (`title_title_id`) REFERENCES `title` (`title_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `s_cate_id_idx` FOREIGN KEY (`cate_id`) REFERENCES `category` (`cate_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `s_origin_id_idx` FOREIGN KEY (`origin_id`) REFERENCES `student_origin` (`origin_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `s_ref_id_idx` FOREIGN KEY (`ref_id`) REFERENCES `student_reference_info` (`ref_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `s_status_id_idx` FOREIGN KEY (`status_id`) REFERENCES `student_status` (`status_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `s_type_id_idx` FOREIGN KEY (`type_id`) REFERENCES `student_type` (`type_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_student_info_student_national_id1` FOREIGN KEY (`national_id`) REFERENCES `student_national_info` (`national_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fkstu_origin_id` FOREIGN KEY (`origin_id`) REFERENCES `student_origin` (`origin_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fkstu_ref_id` FOREIGN KEY (`ref_id`) REFERENCES `student_reference_info` (`ref_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fkstu_status_id` FOREIGN KEY (`status_id`) REFERENCES `student_status` (`status_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fkstu_title` FOREIGN KEY (`title_title_id`) REFERENCES `title` (`title_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fkstu_type_id` FOREIGN KEY (`type_id`) REFERENCES `student_type` (`type_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `trainee_category`
+-- Constraints for table `student_relationship`
 --
-ALTER TABLE `trainee_category`
-  ADD CONSTRAINT `fkcate_id` FOREIGN KEY (`cate_id`) REFERENCES `category` (`cate_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fktrainee_id` FOREIGN KEY (`trainee_id`) REFERENCES `trainee_info` (`trainee_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `student_relationship`
+  ADD CONSTRAINT `fkrel_s_id` FOREIGN KEY (`s_id`) REFERENCES `student_info` (`s_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `supervisor_info`
+--
+ALTER TABLE `supervisor_info`
+  ADD CONSTRAINT `fkspv_bdg` FOREIGN KEY (`spv_bdg`) REFERENCES `building_info` (`bldg_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fkspv_dept` FOREIGN KEY (`spv_dept`) REFERENCES `department_info` (`dep_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `supervisor_info_has_student_info`
+--
+ALTER TABLE `supervisor_info_has_student_info`
+  ADD CONSTRAINT `fk_supervisor_info_has_student_info_student_info1` FOREIGN KEY (`student_info_s_id`) REFERENCES `student_info` (`s_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_supervisor_info_has_student_info_supervisor_info1` FOREIGN KEY (`supervisor_info_spv_id`) REFERENCES `supervisor_info` (`spv_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `trainee_has_project`
 --
 ALTER TABLE `trainee_has_project`
   ADD CONSTRAINT `fkthp_pjc` FOREIGN KEY (`project_id`) REFERENCES `trainee_project` (`project_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fkthp_tnc` FOREIGN KEY (`trainee_id`) REFERENCES `trainee_info` (`trainee_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fkthp_tni` FOREIGN KEY (`trainee_id`) REFERENCES `trainee_info` (`trainee_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `trainee_info`
+--
+ALTER TABLE `trainee_info`
+  ADD CONSTRAINT `fk` FOREIGN KEY (`cate_id`) REFERENCES `category` (`cate_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fktni_bdg` FOREIGN KEY (`tni_bdg`) REFERENCES `building_info` (`bldg_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fktrn_dep_id` FOREIGN KEY (`dep_id`) REFERENCES `department_info` (`dep_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fktrn_location_id` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fktrn_plant_id` FOREIGN KEY (`plant_id`) REFERENCES `plant_info` (`plant_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fktrn_s_id` FOREIGN KEY (`s_id`) REFERENCES `student_info` (`s_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fktrn_trainee_acc_id` FOREIGN KEY (`tac_acc_id`) REFERENCES `trainee_account` (`trainee_acc_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fktrn_trainee_job_id` FOREIGN KEY (`job_id`) REFERENCES `trainee_job` (`job_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fktrn_transportation_id` FOREIGN KEY (`transportation_id`) REFERENCES `trainee_transportation` (`transportation_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `trainee_info_has_trainee_activity`
+--
+ALTER TABLE `trainee_info_has_trainee_activity`
+  ADD CONSTRAINT `fk_s_sts_id` FOREIGN KEY (`student_status_id`) REFERENCES `student_status` (`status_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tr_act_id` FOREIGN KEY (`trainee_activity_id`) REFERENCES `trainee_activity` (`activity_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `trainee_info_has_training_course`
+--
+ALTER TABLE `trainee_info_has_training_course`
+  ADD CONSTRAINT `fk_trainee_info_has_training_course_training_course1` FOREIGN KEY (`training_course_course_id`) REFERENCES `training_course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fkthc_trainee_id` FOREIGN KEY (`training_course_trainee_id`) REFERENCES `trainee_info` (`trainee_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `trainee_presentation`
+--
+ALTER TABLE `trainee_presentation`
+  ADD CONSTRAINT `fk_room` FOREIGN KEY (`room_id`) REFERENCES `room` (`room_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `trainee_visa`
+--
+ALTER TABLE `trainee_visa`
+  ADD CONSTRAINT `fkvis_img_id` FOREIGN KEY (`img_id`) REFERENCES `immigration_office` (`img_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `training_course`
+--
+ALTER TABLE `training_course`
+  ADD CONSTRAINT `fkcou_bldg_id` FOREIGN KEY (`bldg_id`) REFERENCES `building_info` (`bldg_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fkcou_room` FOREIGN KEY (`course_room`) REFERENCES `room` (`room_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `transcript`
+--
+ALTER TABLE `transcript`
+  ADD CONSTRAINT `fktra_application_id` FOREIGN KEY (`application_id`) REFERENCES `application` (`application_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `video`
+--
+ALTER TABLE `video`
+  ADD CONSTRAINT `fkvid_application_id` FOREIGN KEY (`application_id`) REFERENCES `application` (`application_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `visa`
+--
+ALTER TABLE `visa`
+  ADD CONSTRAINT `fk_visa_application1` FOREIGN KEY (`application_application_id`) REFERENCES `application` (`application_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `work_experience`
+--
+ALTER TABLE `work_experience`
+  ADD CONSTRAINT `fk_work_experience_student_info1` FOREIGN KEY (`student_info_s_id`) REFERENCES `student_info` (`s_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
